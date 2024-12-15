@@ -1,7 +1,16 @@
-import 'package:flutter/material.dart';
+/*
+Paolo Santancini - matr. 334128
+Progetto PDMIU 2024
+
+Simulatore di login con logs
+*/
+
+import 'package:flutter/material.dart'; // Android layout
+//import 'package:flutter/cupertino.dart'; // iOS layout
+import 'models/log.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -9,30 +18,47 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Building $runtimeType');
+
     return MaterialApp(
       title: 'Login App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: const LoginPage(),
     );
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPage();
+}
+
+class _LoginPage extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  LoginPage({super.key});
+  @override
+  void initState() {
+    super.initState();
+    debugPrint('Checking log file...');
+    FileUtils().checkAndCreateFile();
+  }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Building $runtimeType');
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
       ),
-      body: Padding(
+      body: Container(
         padding: const EdgeInsets.all(16.0),
+        // Multi-child layout widgets
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -48,19 +74,24 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                String email = _emailController.text;
-                String password = _passwordController.text;
-                // Qui puoi aggiungere la logica di autenticazione
-                if (email == "test@test.com" && password == "password") {
+                //String email = _emailController.text;
+                //String password = _passwordController.text;
+
+// REGISTRARE IL TENTATIVO DI LOGIN
+
+                /*if (email == "test@test.com" && password == "password") {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Email o password errati')),
+                    SnackBar(content: Text('Email o password errati')),
                   );
-                }
+                }*/
+                setState(() {
+                  // No-op
+                });
               },
               child: const Text('Accedi'),
             ),
