@@ -1,26 +1,21 @@
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
+import 'package:file_saver/file_saver.dart';
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
 
 // Gestione del file di log
+// Specifico per browser
 class FileUtils {
   // Costruttore
   FileUtils();
 
-  Future<String> _getFilePath() async {
-    final directory = await getApplicationDocumentsDirectory();
-    return '${directory.path}/log.csv';
+// Salvataggio del file all'interno della cartella download
+  Future<void> saveFile(String text) async {
+    Uint8List bytes = Uint8List.fromList(text.codeUnits);
+    await FileSaver.instance.saveFile(
+      "log",
+      bytes,
+      "",
+      mimeType: MimeType.CSV,
+    );
   }
-
-  Future<void> checkAndCreateFile() async {
-    final path = await _getFilePath();
-    final file = File(path);
-
-    if (await file.exists()) {
-      // NO OP
-    } else {
-      await file.create();
-    }
-  }
-
-  void ScriviLog() {}
 }

@@ -8,6 +8,7 @@ Simulatore di login con logs
 import 'package:flutter/material.dart'; // Android layout
 //import 'package:flutter/cupertino.dart'; // iOS layout
 import 'models/log.dart';
+import 'package:flutter_ntp/flutter_ntp.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,14 +39,39 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
+  // Definizione di variabili private (prefisso _)
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    debugPrint('Checking log file...');
-    FileUtils().checkAndCreateFile();
+    // NO OP
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // NO OP
+  }
+
+  Future<void> getTime() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    DateTime ntpTime;
+
+    try {
+      //myTime = DateTime.now();
+      ntpTime = await FlutterNTP.now();
+    } catch (e) {
+      ntpTime = DateTime.now();
+    }
+
+    setState(() {
+      String currentTime = ntpTime.toLocal().toString();
+      FileUtils().saveFile("$email;$password;$currentTime");
+    });
   }
 
   @override
@@ -74,45 +100,12 @@ class _LoginPage extends State<LoginPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                //String email = _emailController.text;
-                //String password = _passwordController.text;
-
-// REGISTRARE IL TENTATIVO DI LOGIN
-
-                /*if (email == "test@test.com" && password == "password") {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Email o password errati')),
-                  );
-                }*/
-                setState(() {
-                  // No-op
-                });
+                getTime();
               },
               child: const Text('Accedi'),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
-      body: const Center(
-        child: Text('Benvenuto!'),
       ),
     );
   }
