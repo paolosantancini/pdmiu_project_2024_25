@@ -1,17 +1,19 @@
 /*
 Paolo Santancini - matr. 334128
-Progetto PDMIU 2024
+Progetto PDMIU 2024/25
 
 Simulatore di login con logs
 */
 
-import 'package:flutter/material.dart'; // Android layout
 //import 'package:flutter/cupertino.dart'; // iOS layout
-import 'models/log.dart';
-import 'package:flutter_ntp/flutter_ntp.dart';
+import 'package:flutter/material.dart';
+import 'widgets/login.dart';
+import 'widgets/mostra.dart';
+import 'models/lista.dart';
+import 'widgets/esporta.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -19,59 +21,51 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('Building $runtimeType');
-
     return MaterialApp(
-      title: 'Login App',
+      title: 'Progetto PDMIU 2024/25 - Login',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      home: MyHomePage(),
     );
   }
 }
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPage();
+  State<MyHomePage> createState() => _MyHomePage();
 }
 
-class _LoginPage extends State<LoginPage> {
-  // Definizione di variabili private (prefisso _)
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+class _MyHomePage extends State<MyHomePage> {
+  int _selectedIndex = 0;
+  var mialista = Lista();
+
+  static final List<Widget> _widgetOptions = <Widget>[
+    LoginPage(),
+    Mostralog(),
+    Esporta(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    // NO OP
+    // Lista singleton inizializzata con testata
+    mialista.inserisciElemento("E-mail", "Password", "UTC_Time");
   }
 
   @override
   void dispose() {
     super.dispose();
+    mialista.cancella();
     // NO OP
-  }
-
-  Future<void> getTime() async {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    DateTime ntpTime;
-
-    try {
-      //myTime = DateTime.now();
-      ntpTime = await FlutterNTP.now();
-    } catch (e) {
-      ntpTime = DateTime.now();
-    }
-
-    setState(() {
-      String currentTime = ntpTime.toLocal().toString();
-      FileUtils().saveFile("$email;$password;$currentTime");
-    });
   }
 
   @override
@@ -79,33 +73,28 @@ class _LoginPage extends State<LoginPage> {
     debugPrint('Building $runtimeType');
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
+      appBar: AppBar(),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(16.0),
-        // Multi-child layout widgets
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                getTime();
-              },
-              child: const Text('Accedi'),
-            ),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.login),
+            label: 'Login',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.view_array),
+            label: 'Mostra login',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.import_export),
+            label: 'Esporta login',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
     );
   }
