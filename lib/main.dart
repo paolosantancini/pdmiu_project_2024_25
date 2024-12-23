@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Progetto PDMIU 2024/25 - Login',
+      title: 'Progetto PDMIU 2024/25 - Emulatore di Login',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
