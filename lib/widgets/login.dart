@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart'; // Android layout
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:pdmiu_project_2024_25/widgets/toast.dart';
 import 'package:pdmiu_project_2024_25/models/lista.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,10 +14,12 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPage extends State<LoginPage> {
   // Definizione di variabili private (prefisso _)
+  // final: valore noto in fase di runtime
+  // const: valore noto in fase di compilazione (ottimizzazione)
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  DateTime? _currentNtpTime;
-  bool _isLoading = false;
+  DateTime? _ora;
+  bool _caricando = false;
   final mialista = Lista();
 
   @override
@@ -30,6 +33,7 @@ class _LoginPage extends State<LoginPage> {
     // NO OP
   }
 
+  // Rappresenta una funzione asincrona che potrebbe completarsi in futuro
   Future<void> getNtpTime() async {
     // Applcazione di condizionale ternario
     String email = _emailController.text == "" ? "---" : _emailController.text;
@@ -37,42 +41,50 @@ class _LoginPage extends State<LoginPage> {
         _passwordController.text == "" ? "---" : _passwordController.text;
 
     setState(() {
-      _isLoading = true;
+      _caricando = true;
     });
     try {
       // Richiesta REST API
-      final response = await http
+      final risposta = await http
           .get(Uri.parse('https://worldtimeapi.org/api/timezone/Etc/UTC'));
 
-      if (response.statusCode == 200) {
+      if (risposta.statusCode == 200) {
         // Lettura della risposta REST in formato json
-        final data = json.decode(response.body);
+        final data = json.decode(risposta.body);
         setState(() {
           // Acquisizione del valore dell'attributo "utc_datetime" dal json
-          _currentNtpTime = DateTime.parse(data['utc_datetime']);
+          _ora = DateTime.parse(data['utc_datetime']);
         });
       } else {
-        debugPrint('Errore nella richiesta: ${response.statusCode}');
+        debugPrint('Errore nella richiesta: ${risposta.statusCode}');
       }
     } catch (e) {
       // Intrappolamento di eventuale errore
       debugPrint("Errore nel recupero dell'ora NTP: $e");
     } finally {
       setState(() {
-        _isLoading = false;
+        _caricando = false;
         //FileUtils().saveFile(message);
         mialista.inserisciElemento(
-            email,
-            pwd,
-            _currentNtpTime.toString() == "null"
-                ? "---"
-                : _currentNtpTime.toString());
+            email, pwd, _ora.toString() == "null" ? "---" : _ora.toString());
         //Lista().esportaCSV(_dataList);
         _emailController.clear();
         _passwordController.clear();
       });
     }
-    Toast('Login registrato ${mialista.restituisciContatore().toString()}');
+    _showToast(
+        'Login registrato ${mialista.restituisciContatore().toString()}');
+  }
+
+  // metodo per la rappresentazione del contatore
+  void _showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+    );
   }
 
   @override
@@ -84,8 +96,14 @@ class _LoginPage extends State<LoginPage> {
       body: Container(
         padding: const EdgeInsets.all(16.0),
         // Multi-child layout widgets
-        child: _isLoading
-            ? const CircularProgressIndicator()
+        child: _caricando
+            ? //const CircularProgressIndicator()
+            Center(
+                child: SpinKitCircle(
+                  color: Colors.blue,
+                  size: 50.0,
+                ),
+              )
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

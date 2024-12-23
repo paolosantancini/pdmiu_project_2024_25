@@ -11,20 +11,20 @@ class Mostralog extends StatefulWidget {
 
 class _Mostralog extends State<Mostralog> {
   final mialista = Lista();
-  List<List<String>> _data = [];
-  bool _loading = true;
+  List<List<String>> _dati = [];
+  bool _caricando = true;
 
   @override
   void initState() {
     super.initState();
-    _loadCsvData();
+    _caricaDatiCSV();
   }
 
-  Future<void> _loadCsvData() async {
+  Future<void> _caricaDatiCSV() async {
     final List<List<String>> items = mialista.restituisciLista();
     setState(() {
-      _data = items;
-      _loading = false;
+      _dati = items;
+      _caricando = false;
     });
   }
 
@@ -34,7 +34,7 @@ class _Mostralog extends State<Mostralog> {
 
     return Scaffold(
       appBar: AppBar(),
-      body: _loading
+      body: _caricando
           ? Center(
               child: SpinKitCircle(
                 color: Colors.blue,
@@ -45,11 +45,11 @@ class _Mostralog extends State<Mostralog> {
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 // Header
-                columns: _data[0]
+                columns: _dati[0]
                     .map((header) => DataColumn(label: Text(header.toString())))
                     .toList(),
                 // Dati (log degli accessi)
-                rows: _data
+                rows: _dati
                     .sublist(1)
                     .map((row) => DataRow(
                           cells: row

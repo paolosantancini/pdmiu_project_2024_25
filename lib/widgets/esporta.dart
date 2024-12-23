@@ -9,6 +9,8 @@ class Esporta extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('Building $runtimeType');
 
+    // Esportazione del contenuto della lista nel file "log.csv"
+    // Di default la cartella è quella di "download" del relativo s.o.
     mialista.esportaCSV();
     return Scaffold(
       appBar: AppBar(),

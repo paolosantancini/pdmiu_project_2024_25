@@ -39,7 +39,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePage extends State<MyHomePage> {
-  int _selectedIndex = 0;
+  int scelta = 0;
   var mialista = Lista();
 
   static final List<Widget> _widgetOptions = <Widget>[
@@ -48,9 +48,9 @@ class _MyHomePage extends State<MyHomePage> {
     Esporta(),
   ];
 
-  void _onItemTapped(int index) {
+  void __selezione(int index) {
     setState(() {
-      _selectedIndex = index;
+      scelta = index;
     });
   }
 
@@ -75,7 +75,7 @@ class _MyHomePage extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: _widgetOptions.elementAt(scelta),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -92,9 +92,9 @@ class _MyHomePage extends State<MyHomePage> {
             label: 'Esporta login',
           ),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: scelta,
         selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
+        onTap: __selezione,
       ),
     );
   }
