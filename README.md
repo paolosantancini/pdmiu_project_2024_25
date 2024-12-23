@@ -20,3 +20,9 @@ Selezionando la voce di menù "Mostra Login" il sistema elenca tutti gli accessi
 
 ![image](https://github.com/user-attachments/assets/ad8e3671-5e45-48c5-a972-b3ab180a4766)
 
+Selezionando la voce di menù "Esporta Login" il sistema elabora un file csv e lo scarica all'interno della cartella predefinita dal sistema operativo in utilizzo (in genere "Download").
+
+![image](https://github.com/user-attachments/assets/534533aa-2b74-410a-bf66-5c931d7f89a9)
+
+# Tecnologia
+
