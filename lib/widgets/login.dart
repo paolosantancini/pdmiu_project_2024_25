@@ -35,10 +35,8 @@ class _LoginPage extends State<LoginPage> {
 
   // Rappresenta una funzione asincrona che potrebbe completarsi in futuro
   Future<void> getNtpTime() async {
-    // Applcazione di condizionale ternario
-    String email = _emailController.text == "" ? "---" : _emailController.text;
-    String pwd =
-        _passwordController.text == "" ? "---" : _passwordController.text;
+    String email = _emailController.text;
+    String pwd = _passwordController.text;
 
     setState(() {
       _caricando = true;
@@ -73,7 +71,7 @@ class _LoginPage extends State<LoginPage> {
       });
     }
     _showToast(
-        'Login registrato ${mialista.restituisciContatore().toString()}');
+        'Login registrati ${mialista.restituisciContatore().toString()}');
   }
 
   // metodo per la rappresentazione del contatore
