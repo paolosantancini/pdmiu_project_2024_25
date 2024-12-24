@@ -26,3 +26,13 @@ Selezionando la voce di menù "Esporta Login" il sistema elabora un file csv e l
 
 # Tecnologia
 
+In fase implementativa sono state utilizzare le seguenti librerie:
+
+| Libreria | Descrizione |
+| -------- | ----------- |
+| file_saver: ^0.1.0 | dsnlcsnclkds |
+| http: ^0.13.3 | ----------- |
+| fluttertoast: ^8.0.8 | --- |
+| csv: ^5.0.0 | ---- |
+| flutter_spinkit: ^5.1.0 | --- |
+| crypto: ^3.0.1 | --- |
