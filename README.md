@@ -57,6 +57,8 @@ factory Lista() {
    return _istanza;
 }
 ```
+In Flutter, l'ereditarietà di stato tra widget si riferisce al passaggio di dati o stato da un widget padre a uno o più widget figli. In questo caso di studio si è preferito agire a livello di struttura di dati piuttosto che a livello di ereditarietà tra widgets. Ciò anche per una più efficiente ricostruzione dell'albero dei widget.
+
 
 Per il recupero dell'orario durante il quale un utente tenta un "login", in questo contesto di studio universitario, si è scelto di utilizzare una chiamata http piuttosto che una libreria già pronta (es. flutter_ntp). Il seguente sito <a href="https://worldtimeapi.org" target="_blank">Worldtimeapi</a> offre un servizio su protocollo tcp e per mezzo di una chiamata REST che però può fallire a causa di una mancata risposta da parte del fornitore del servizio. Casistica comunque gestita dal programma.
 
