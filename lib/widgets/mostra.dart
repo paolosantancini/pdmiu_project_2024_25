@@ -41,24 +41,26 @@ class _Mostralog extends State<Mostralog> {
                 size: 50.0,
               ),
             )
-          : SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                // Header
-                columns: _dati[0]
-                    .map((header) => DataColumn(label: Text(header.toString())))
-                    .toList(),
-                // Dati (log degli accessi)
-                rows: _dati
-                    .sublist(1)
-                    .map((row) => DataRow(
-                          cells: row
-                              .map((cell) => DataCell(Text(cell.toString())))
-                              .toList(),
-                        ))
-                    .toList(),
+          : GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 10, // pixel
               ),
-            ),
+              // numero di righe per numero di colonne
+              itemCount: _dati.length * _dati[0].length,
+              itemBuilder: (context, indice) {
+                int riga = indice ~/ _dati[0].length;
+                int colonna = indice % _dati[0].length;
+                return Container(
+                  margin: EdgeInsets.all(1.0),
+                  color: Colors.grey,
+                  child: Center(
+                      child: Text(
+                    _dati[riga][colonna],
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  )),
+                );
+              }),
     );
   }
 }
