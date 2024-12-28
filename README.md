@@ -40,4 +40,56 @@ In fase implementativa sono state utilizzare le seguenti librerie:
 | flutter_spinkit | "Loading spinners", animazioni di caricamento |
 | crypto | Crittografia |
 
+La struttura dei dati è una lista annidata o matrice (r,c) gestita da uno specifico oggetto (classe) di nome "Lista". Per la condivisione e la consistenza delle informazioni contenute nella lista, ad ogni passaggio tra widgets, si è scelto di strutturare tale classe con il "design pattern singleton". Ciò rende possibile il passaggio dell'oggetto per mezzo di un'unica istanza. 
+
+```dart
+// Struttura dati
+final List<List<String>> listaDati = [];
+
+// Pattern Singleton
+Lista._construttorePrivato();
+
+// Singola istanza
+static final Lista _istanza = Lista._construttorePrivato();
+
+// Costruttore "Factory": ritorna la stessa istanza
+factory Lista() {
+   return _istanza;
+}
+```
+
+Per il recupero dell'orario durante il quale un utente tenta un "login", in questo contesto di studio universitario, si è scelto di utilizzare una chiamata http piuttosto che una libreria già pronta (es. flutter_ntp). Il seguente sito <a href="https://worldtimeapi.org" target="_blank">Worldtimeapi</a> offre un servizio su protocollo tcp e per mezzo di una chiamata REST che però può fallire a causa di una mancata risposta da parte del fornitore del servizio. Casistica comunque gestita dal programma.
+
+```dart
+try {
+      // Richiesta REST API
+      final risposta = await http
+          .get(Uri.parse('https://worldtimeapi.org/api/timezone/Etc/UTC'));
+
+      if (risposta.statusCode == 200) {
+        // Lettura della risposta REST in formato json
+        final data = json.decode(risposta.body);
+        setState(() {
+          // Acquisizione del valore dell'attributo "utc_datetime" dal json
+          _ora = DateTime.parse(data['utc_datetime']);
+        });
+      } else {
+        debugPrint('Errore nella richiesta: ${risposta.statusCode}');
+      }
+    } catch (e) {
+      // Intrappolamento di eventuale errore
+      debugPrint("Errore nel recupero dell'ora NTP: $e");
+    } finally {
+      setState(() {
+        _caricando = false;
+        //FileUtils().saveFile(message);
+        mialista.inserisciElemento(
+            email, pwd, _ora.toString() == "null" ? "---" : _ora.toString());
+        //Lista().esportaCSV(_dataList);
+        _emailController.clear();
+        _passwordController.clear();
+      });
+    }
+```
+
 </div>
