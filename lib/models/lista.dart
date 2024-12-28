@@ -7,6 +7,7 @@ import 'dart:convert';
 
 // Classe per la gestione della lista dei log
 class Lista {
+  // Struttura dati
   final List<List<String>> listaDati = [];
 
 // Pattern Singleton

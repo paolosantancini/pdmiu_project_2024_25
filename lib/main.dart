@@ -42,6 +42,7 @@ class _MyHomePage extends State<MyHomePage> {
   int scelta = 0;
   var mialista = Lista();
 
+  // Elenco degli widgets
   static final List<Widget> _widgetOptions = <Widget>[
     LoginPage(),
     Mostralog(),
