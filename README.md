@@ -19,7 +19,9 @@ Ad ogni accesso l'applicazione mostra il numero di registrazione in un "Toast" i
 
 Selezionando la voce di menù "Mostra Login" il sistema elenca tutti gli accessi effettuati fino a quel momento.
 
-<p align=center><img width="50%" alt="img03" src="https://github.com/user-attachments/assets/c6b6e03b-0819-4c51-8d75-58ddd41e56d1" /></p>
+<p align=center>
+<img width="50%" alt="img03" src="https://github.com/user-attachments/assets/12fa1c02-65e4-4ded-82d9-2db04007d6a5" />
+</p>
 
 Selezionando la voce di menù "Esporta Login" il sistema elabora un file csv e lo scarica all'interno della cartella predefinita dal sistema operativo in utilizzo (in genere "Download").
 
@@ -58,8 +60,29 @@ factory Lista() {
 }
 ```
 In Flutter, l'ereditarietà di stato tra widget si riferisce al passaggio di dati o stato da un widget padre a uno o più widget figli. In questo caso di studio si è preferito agire a livello di struttura di dati piuttosto che a livello di ereditarietà tra widgets. Ciò anche per una più efficiente ricostruzione dell'albero dei widget.
-
-
+La visualizzazione degli elementi della lista è stata gestita attraverso l'oggetto "GridView".
+```dart
+GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 10, // pixel
+              ),
+              // numero di righe per numero di colonne
+              itemCount: _dati.length * _dati[0].length,
+              itemBuilder: (context, indice) {
+                int riga = indice ~/ _dati[0].length;
+                int colonna = indice % _dati[0].length;
+                return Container(
+                  margin: EdgeInsets.all(1.0),
+                  color: Colors.grey,
+                  child: Center(
+                      child: Text(
+                    _dati[riga][colonna],
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  )),
+                );
+              }),
+```       
 Per il recupero dell'orario durante il quale un utente tenta un "login", in questo contesto di studio universitario, si è scelto di utilizzare una chiamata http piuttosto che una libreria già pronta (es. flutter_ntp). Il seguente sito <a href="https://worldtimeapi.org" target="_blank">Worldtimeapi</a> offre un servizio su protocollo tcp e per mezzo di una chiamata REST che però può fallire a causa di una mancata risposta da parte del fornitore del servizio. Casistica comunque gestita dal programma.
 
 ```dart
