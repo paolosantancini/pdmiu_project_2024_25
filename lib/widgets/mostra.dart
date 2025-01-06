@@ -28,6 +28,10 @@ class _Mostralog extends State<Mostralog> {
     });
   }
 
+  Color _getColor(miariga) {
+    return (miariga % 2) == 0 ? Colors.grey : Colors.blueGrey;
+  }
+
   @override
   Widget build(BuildContext context) {
     debugPrint('Building $runtimeType');
@@ -53,7 +57,8 @@ class _Mostralog extends State<Mostralog> {
                 int colonna = indice % _dati[0].length;
                 return Container(
                   margin: EdgeInsets.all(1.0),
-                  color: Colors.grey,
+                  // _ora.toString() == "null" ? "---" : _ora.toString())
+                  color: riga == 0 ? Colors.black : _getColor(riga),
                   child: Center(
                       child: Text(
                     _dati[riga][colonna],
