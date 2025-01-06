@@ -20,7 +20,7 @@ Ad ogni accesso l'applicazione mostra il numero di registrazione in un "Toast" i
 Selezionando la voce di menù "Mostra Login" il sistema elenca tutti gli accessi effettuati fino a quel momento.
 
 <p align=center>
-<img width="50%" alt="img03" src="https://github.com/user-attachments/assets/12fa1c02-65e4-4ded-82d9-2db04007d6a5" />
+   <img width="50%" alt="img03" src="https://github.com/user-attachments/assets/59b2f9ad-e2cc-4f08-a757-a45dd7ddf6a7" />
 </p>
 
 Selezionando la voce di menù "Esporta Login" il sistema elabora un file csv e lo scarica all'interno della cartella predefinita dal sistema operativo in utilizzo (in genere "Download").
